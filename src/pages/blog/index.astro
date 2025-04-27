@@ -1,29 +1,25 @@
 ---
-import "../../app.css";
-import Footer from "../../components/footer.astro";
-import Navigation from "../../components/navigation.astro";
+import PostLink from "../../components/post-link.astro";
+import Base from "../../layouts/base.astro";
+
+const allPosts = Object.values(import.meta.glob("./*.md", { eager: true }));
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <Navigation />
+<Base pageTitle="Blog">
+  <h1>Our Astro Learning Blog</h1>
+  <p>This is where I will post about my journey learning Astro.</p>
 
-    <h1>Our Astro Learning Blog</h1>
-    <p>This is where I will post about my journey learning Astro.</p>
-
-    <ul>
-      <li><a href="/blog/post-1/">Post 1</a></li>
-      <li><a href="/blog/post-2/">Post 2</a></li>
-      <li><a href="/blog/post-3/">Post 3</a></li>
-    </ul>
-
-    <Footer />
-  </body>
-</html>
+  <ul>
+    {
+      allPosts.map(({ url, frontmatter }: any) => {
+        return (
+          <li>
+            <PostLink url={url} frontmatter={frontmatter}>
+              {frontmatter.title}
+            </PostLink>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Base>

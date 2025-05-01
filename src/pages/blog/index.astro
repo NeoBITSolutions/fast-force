@@ -1,8 +1,9 @@
 ---
+import { getCollection } from "astro:content";
 import PostLink from "../../components/post-link.astro";
 import Base from "../../layouts/base.astro";
 
-const allPosts = Object.values(import.meta.glob("./*.md", { eager: true }));
+const allPosts = await getCollection("blog");
 ---
 
 <Base pageTitle="Blog">
@@ -11,11 +12,11 @@ const allPosts = Object.values(import.meta.glob("./*.md", { eager: true }));
 
   <ul>
     {
-      allPosts.map(({ url, frontmatter }: any) => {
+      allPosts.map(({ id, data }) => {
         return (
           <li>
-            <PostLink url={url} frontmatter={frontmatter}>
-              {frontmatter.title}
+            <PostLink url={`/blog/${id}`} frontmatter={data}>
+              {data.title}
             </PostLink>
           </li>
         );
